@@ -1,0 +1,802 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Cyber Security Awareness Quiz | TechDefenders1 Foundation</title>
+<style>
+*{box-sizing:border-box}
+body{
+ margin:0;padding:20px;
+ font-family:Arial,sans-serif;
+ background:linear-gradient(135deg,#0f172a,#1e293b);
+ color:white
+}
+.container{
+ max-width:900px;margin:auto;padding:30px;
+ background:#1e293b;border-radius:20px;
+ box-shadow:0 0 25px rgba(0,0,0,.4)
+}
+.logo{text-align:center;margin-bottom:20px}
+.logo img{width:400px;max-width:100%;height:auto}
+.event-header{text-align:center;margin-bottom:25px}
+.event-header h1{color:#facc15;font-size:30px}
+.event-header h2{color:#38bdf8;font-size:23px}
+.event-info,.rules{
+ background:#0f172a;border-radius:15px;
+ padding:18px;line-height:1.8;
+ margin:20px 0;text-align:center
+}
+.rules{text-align:left}
+input,select{
+ width:100%;padding:14px;margin:9px 0;
+ border:0;border-radius:10px;font-size:16px;
+ color:#111;background:white
+}
+label{display:block;margin-top:12px;font-weight:bold}
+button{
+ padding:14px 25px;margin:10px 5px;
+ border:0;border-radius:10px;cursor:pointer;
+ font-size:16px;background:#06b6d4;color:white;
+ font-weight:bold
+}
+button:hover{opacity:.9}
+button:disabled{opacity:.5;cursor:not-allowed}
+.option{
+ background:#334155;padding:15px;margin:12px 0;
+ border-radius:12px;cursor:pointer;
+ border:2px solid transparent
+}
+.option:hover{background:#475569}
+.option.selected{background:#075985;border-color:#38bdf8}
+.timer{text-align:center;font-size:24px;color:#22c55e;margin:15px}
+.question-number{text-align:center;color:#cbd5e1}
+.center{text-align:center}
+.hidden{display:none!important}
+#result{text-align:center;padding:25px 10px}
+.score{font-size:34px;color:#facc15;font-weight:bold;margin:15px}
+.result-note{font-size:18px;line-height:1.7}
+.small{font-size:13px;color:#cbd5e1}
+#notice{
+ display:none;position:fixed;bottom:20px;left:5%;
+ width:90%;max-width:650px;z-index:99999;
+ background:#facc15;color:#111;padding:14px;
+ border-radius:12px;text-align:center;font-weight:bold
+}
+#resumeFullscreen{
+ display:none;position:fixed;top:12px;right:12px;
+ background:#dc2626;z-index:100000
+}
+@media(max-width:600px){
+ .container{padding:20px 14px}
+ .event-header h1{font-size:25px}
+ .event-header h2{font-size:20px}
+}
+</style>
+</head>
+<body>
+
+<div id="notice" role="status" aria-live="polite"></div>
+<button id="resumeFullscreen" onclick="resumeFullscreen()">Resume Fullscreen</button>
+
+<div class="container">
+
+<!-- ORIGINAL WEBSITE LOGO -->
+<div class="logo">
+ <img src="Techdefenders1 Foundation logo.png" alt="TechDefenders1 Foundation Logo">
+</div>
+
+<div class="event-header">
+ <h1>Cyber Security Awareness Quiz</h1>
+ <h2>TechDefenders1 Foundation Indore M.P.</h2>
+ <div class="event-info">
+  <strong>Organized by TechDefenders1 Foundation</strong><br>
+  At Diwali Milan & Annakut Mahotsav organized by Shri Rajasthan Kumawat Kshatriya Samaj, Indore, (M.P.).
+ </div>
+</div>
+
+<!-- REGISTRATION -->
+<section id="registration">
+<h2 class="center">Registration / पंजीकरण</h2>
+
+<label>Full Name / पूरा नाम</label>
+<input id="name" type="text" maxlength="100"
+ placeholder="Enter Full Name / पूरा नाम लिखें" autocomplete="name" required>
+
+<label>Mobile Number / मोबाइल नंबर</label>
+<input id="mobile" type="tel" maxlength="10" inputmode="numeric"
+ placeholder="10 Digit Mobile Number / 10 अंकों का मोबाइल नंबर" required>
+
+<label>Gmail ID / जीमेल आईडी</label>
+<input id="email" type="email" maxlength="150"
+ placeholder="example@gmail.com" autocomplete="email" required>
+
+<label>Occupation / व्यवसाय</label>
+<select id="occupation" required>
+ <option value="">Select Occupation / व्यवसाय चुनें</option>
+ <option>Student / विद्यार्थी</option>
+ <option>Teacher / शिक्षक</option>
+ <option>Professional / पेशेवर</option>
+ <option>Business / व्यवसाय</option>
+ <option>Government Employee / सरकारी कर्मचारी</option>
+ <option>Other / अन्य</option>
+</select>
+
+<label>Quiz Language / प्रश्नों की भाषा</label>
+<select id="language">
+ <option value="English">English</option>
+ <option value="Hindi">हिंदी</option>
+</select>
+
+<div class="rules">
+<h3 class="center">Instructions / निर्देश</h3>
+• Total Questions: 15 / कुल प्रश्न: 15<br>
+• Each Question: 1 Mark / प्रत्येक प्रश्न: 1 अंक<br>
+• Maximum Marks: 15 / अधिकतम अंक: 15<br>
+• Time per Question: 45 Seconds / प्रत्येक प्रश्न: 45 सेकंड<br>
+• All questions are mandatory / सभी प्रश्न अनिवार्य हैं।<br>
+• Tab switching or minimizing will submit the quiz./टैब बदलने या मिनिमाइज करने पर क्विज सबमिट हो जाएगी।<br>
+• Right-click and selected keyboard shortcuts are restricted during the quiz./क्विज़ के दौरान राइट-क्लिक और चयनित कीबोर्ड शॉर्टकट प्रतिबंधित हैं।<br>
+• Use Stable Internet Connection/स्थिर इंटरनेट कनेक्शन का उपयोग करें।
+</div>
+
+<div class="center">
+<button id="startBtn" onclick="startQuiz()">Start Quiz / क्विज शुरू करें</button>
+</div>
+</section>
+
+<!-- QUIZ -->
+<section id="quiz" class="hidden">
+ <div class="timer">
+  Time Left / समय शेष: <span id="time">45</span>s
+ </div>
+ <div class="question-number">
+  Question / प्रश्न <span id="qNumber">1</span> / 15
+ </div>
+ <h2 id="question"></h2>
+ <div id="options"></div>
+ <div class="center">
+  <button id="nextBtn" onclick="nextQuestion()">Next Question / अगला प्रश्न</button>
+  <button id="submitBtn" class="hidden" onclick="submitQuiz()">Submit Quiz / क्विज जमा करें</button>
+ </div>
+</section>
+
+<!-- RESULT -->
+<section id="result" class="hidden">
+ <h1>Quiz Result / क्विज परिणाम</h1>
+ <h2 id="resultName"></h2>
+ <div class="score">
+  <span id="obtained">0</span> / 15
+ </div>
+ <h3 id="percentage"></h3>
+ <div class="result-note" id="resultMessage"></div>
+ <p id="sheetStatus" class="small">Saving result to Google Sheet...</p>
+ <hr>
+ <h2>Certificate / प्रमाण पत्र</h2>
+ <p>Download Your Participation Certificate By Given Below Download Button.</p>
+ <p>नीचे दिए गए डाउनलोड बटन से अपना भागीदारी प्रमाणपत्र डाउनलोड करें।।</p>
+ <button id="downloadBtn" onclick="downloadCertificate()">
+ Download Certificate PDF / प्रमाण पत्र डाउनलोड करें
+ </button>
+ <p id="downloadStatus" class="small"></p>
+</section>
+
+</div>
+
+<!-- MAIN JAVASCRIPT -->
+<script>
+
+/* CONFIGURATION */
+
+const SHEET_URL = "YOUR_GOOGLE_APPS_SCRIPT_WEB_APP_URL";
+
+const CERTIFICATE_IMAGE = "CERTIFICATE OF PARTICIPATION.png";
+
+const TOTAL_QUESTIONS = 15;
+const MARKS_PER_QUESTION = 1;
+const QUESTION_TIME = 45;
+
+
+/* ENGLISH QUESTIONS */
+
+const englishQuestions = [
+  { q: "You scan a QR code on a poster in college. It opens a page asking for your college email password to view your exam timetable. What is the safest action?", o: ["Enter your password to view the timetable", "Share your password with a friend", "Verify the timetable through the official college website or office", "Use the same password on the page"], a: 2 },
+
+  { q: "You receive a suspicious WhatsApp message claiming that your mobile SIM will be blocked unless you complete an urgent KYC update using a link. You have not lost any money yet. Which Indian government facility can you use to report this suspected fraudulent communication?", o: ["DigiLocker", "UMANG", "Aadhaar Seva Kendra", "Sanchar Saathi's Chakshu facility"], a: 3 },
+
+  { q: "Someone calls claiming to be a bank employee and asks for your OTP to stop a suspicious transaction. What should you do?", o: ["Never share the OTP and contact your bank through its official number", "Share the OTP immediately", "Send the OTP by SMS", "Tell them your ATM PIN instead"], a: 0 },
+
+  { q: "You receive an unexpected email attachment titled 'Important Salary Update.' What should you do?", o: ["Open it immediately", "Disable antivirus and open it", "Download it and forward it", "Verify the sender through a trusted channel before opening it"], a: 3 },
+
+  { q: "You use the same password for your email and social media accounts. One account is compromised. What should you do?", o: ["Keep using the same password", "Change passwords to unique, strong ones and enable MFA", "Share your password with a friend", "Delete all your accounts"], a: 1 },
+
+  { q: "A social media quiz asks for your first school's name and your pet's name. These details are also used in your account security questions. What should you do?", o: ["Share the details publicly", "Post them with your phone number", "Avoid sharing these details because they may help someone guess your security answers", "Share them with strangers"], a: 2 },
+
+  { q: "You lose your phone, which contains your email and banking apps. What should you do first?", o: ["Wait for someone to return it", "Do nothing", "Post your account details online", "Lock or erase the device remotely and contact your bank and service provider"], a: 3 },
+
+  { q: "You scan a QR code offering a free shopping voucher. The website asks for your personal and payment details. What should you do?", o: ["Enter your banking OTP", "Verify the offer through the official website and avoid suspicious links", "Enter all requested details", "Share the QR code with everyone"], a: 1 },
+
+  { q: "Your laptop shows an update notification in its official system settings. You have postponed updates for weeks. What should you do?", o: ["Download an update from a random website", "Ignore the update forever", "Disable all security updates", "Install the update through the official system settings"], a: 3 },
+
+  { q: "Your friend sends you a file named Exam_Results.pdf.exe on WhatsApp and says it contains your exam results. What should you do?", o: ["Open it immediately", "Forward it to classmates", "Do not open it because it is an executable file; verify with your friend through another channel", "Disable antivirus before opening it"], a: 2 },
+
+  { q: "You receive an email saying someone logged into your account from another city. You did not log in, but you can still access your account. What should you do?", o: ["Ignore the email", "Change your password, enable MFA and review account activity", "Reply with your password", "Share the email with strangers"], a: 1 },
+
+  { q: "A student accidentally transfers ₹10,000 to a fraudster after receiving a fake bank call. Which is the correct action to report the cyber financial fraud in India?", o: ["Wait for the bank to detect it", "Post the fraudster's number on social media only", "Call 1930 promptly and report it on the National Cyber Crime Reporting Portal", "Delete the transaction message"], a: 2 },
+
+  { q: "You find a USB drive in your office parking lot. What should you do?", o: ["Plug it into your computer", "Hand it over to your IT or security team", "Take it home and check it", "Give it to a colleague to test"], a: 1 },
+
+  { q: "You use the same password for your email and social media accounts. One account is compromised. What should you do?", o: ["Share your password with a friend", "Keep using the same password", "Delete all your accounts", "Use unique strong passwords and enable MFA"], a: 3 },
+
+  { q: "Your friend messages you asking for urgent money but refuses to answer your call. What should you do?", o: ["Transfer the money immediately", "Share your UPI PIN", "Verify your friend's identity through another trusted method", "Ignore all verification"], a: 2 }
+];
+
+
+/* HINDI QUESTIONS */
+
+const hindiQuestions = [
+  { q: "आप कॉलेज के पोस्टर पर लगा QR कोड स्कैन करते हैं। यह परीक्षा की समय-सारणी दिखाने के लिए आपके कॉलेज ईमेल का पासवर्ड मांगता है। सबसे सुरक्षित कदम क्या है?", o: ["समय-सारणी देखने के लिए पासवर्ड डाल दें", "अपना पासवर्ड किसी दोस्त को बता दें", "कॉलेज की आधिकारिक वेबसाइट या कार्यालय से समय-सारणी की पुष्टि करें", "उस पेज पर अपना वही पासवर्ड इस्तेमाल करें"], a: 2 },
+
+  { q: "आपको WhatsApp पर एक संदिग्ध मैसेज मिलता है, जिसमें कहा जाता है कि लिंक से तुरंत KYC अपडेट नहीं करने पर आपका SIM बंद हो जाएगा। अभी तक आपका कोई पैसा नहीं गया है। इस संदिग्ध मैसेज की रिपोर्ट करने के लिए भारत सरकार की किस सुविधा का उपयोग कर सकते हैं?", o: ["DigiLocker", "UMANG", "आधार सेवा केंद्र", "Sanchar Saathi की Chakshu सुविधा"], a: 3 },
+
+  { q: "कोई व्यक्ति बैंक कर्मचारी बनकर कॉल करता है और संदिग्ध ट्रांजैक्शन रोकने के लिए आपका OTP मांगता है। आपको क्या करना चाहिए?", o: ["OTP कभी साझा न करें और बैंक के आधिकारिक नंबर पर संपर्क करें", "तुरंत OTP बता दें", "OTP SMS से भेज दें", "उसे अपना ATM PIN बता दें"], a: 0 },
+
+  { q: "आपको 'Important Salary Update' नाम से एक अनजान ईमेल अटैचमेंट मिलता है। आपको क्या करना चाहिए?", o: ["उसे तुरंत खोलें", "एंटीवायरस बंद करके उसे खोलें", "उसे डाउनलोड करके आगे भेजें", "खोलने से पहले भरोसेमंद माध्यम से भेजने वाले की पुष्टि करें"], a: 3 },
+
+  { q: "आप ईमेल और सोशल मीडिया के लिए एक ही पासवर्ड इस्तेमाल करते हैं। आपका एक अकाउंट हैक हो जाता है। आपको क्या करना चाहिए?", o: ["उसी पासवर्ड का इस्तेमाल जारी रखें", "अलग-अलग मजबूत पासवर्ड रखें और MFA चालू करें", "अपना पासवर्ड किसी दोस्त को बता दें", "अपने सभी अकाउंट डिलीट कर दें"], a: 1 },
+
+  { q: "सोशल मीडिया पर एक क्विज आपसे आपके पहले स्कूल और पालतू जानवर का नाम पूछती है। ये जानकारी आपके अकाउंट के सिक्योरिटी सवालों में भी इस्तेमाल होती है। आपको क्या करना चाहिए?", o: ["ये जानकारी सार्वजनिक रूप से साझा करें", "इन्हें अपने फोन नंबर के साथ पोस्ट करें", "इन्हें साझा न करें, क्योंकि इनसे आपके सिक्योरिटी जवाबों का अनुमान लगाया जा सकता है", "इन्हें अजनबियों के साथ साझा करें"], a: 2 },
+
+  { q: "आपका फोन खो जाता है, जिसमें ईमेल और बैंकिंग ऐप मौजूद हैं। आपको सबसे पहले क्या करना चाहिए?", o: ["किसी के फोन लौटाने का इंतजार करें", "कुछ भी न करें", "अपने अकाउंट की जानकारी ऑनलाइन पोस्ट करें", "फोन को रिमोटली लॉक या वाइप करें और बैंक तथा मोबाइल सेवा प्रदाता को सूचित करें"], a: 3 },
+
+  { q: "आप एक मुफ्त शॉपिंग वाउचर के लिए QR कोड स्कैन करते हैं। वेबसाइट आपसे व्यक्तिगत और पेमेंट की जानकारी मांगती है। आपको क्या करना चाहिए?", o: ["अपना बैंकिंग OTP डाल दें", "ऑफर की आधिकारिक वेबसाइट से पुष्टि करें और संदिग्ध लिंक से बचें", "मांगी गई सभी जानकारी भर दें", "QR कोड सभी को भेज दें"], a: 1 },
+
+  { q: "आपके लैपटॉप की आधिकारिक सिस्टम सेटिंग्स में अपडेट का नोटिफिकेशन आता है। आपने कई हफ्तों से अपडेट नहीं किया है। आपको क्या करना चाहिए?", o: ["किसी अनजान वेबसाइट से अपडेट डाउनलोड करें", "अपडेट को हमेशा अनदेखा करें", "सभी सिक्योरिटी अपडेट बंद कर दें", "आधिकारिक सिस्टम सेटिंग्स के माध्यम से अपडेट इंस्टॉल करें"], a: 3 },
+
+  { q: "आपका दोस्त WhatsApp पर Exam_Results.pdf.exe नाम की फाइल भेजता है और कहता है कि इसमें आपके परीक्षा परिणाम हैं। आपको क्या करना चाहिए?", o: ["उसे तुरंत खोलें", "उसे अपने सहपाठियों को फॉरवर्ड करें", "इसे न खोलें, क्योंकि यह एक executable फाइल है। दूसरे माध्यम से दोस्त से पुष्टि करें", "खोलने से पहले एंटीवायरस बंद कर दें"], a: 2 },
+
+  { q: "आपको एक ईमेल मिलता है कि किसी दूसरे शहर से आपके अकाउंट में लॉगिन किया गया है। आपने लॉगिन नहीं किया, लेकिन आप अभी भी अपना अकाउंट खोल सकते हैं। आपको क्या करना चाहिए?", o: ["ईमेल को अनदेखा करें", "पासवर्ड बदलें, MFA चालू करें और अकाउंट की गतिविधि जांचें", "जवाब में अपना पासवर्ड भेजें", "ईमेल अजनबियों के साथ साझा करें"], a: 1 },
+
+  { q: "एक छात्र फर्जी बैंक कॉल के बाद गलती से धोखेबाज को ₹10,000 ट्रांसफर कर देता है। भारत में साइबर वित्तीय धोखाधड़ी की रिपोर्ट करने का सही कदम क्या है?", o: ["बैंक के खुद पता लगाने का इंतजार करें", "केवल धोखेबाज का नंबर सोशल मीडिया पर पोस्ट करें", "तुरंत 1930 पर कॉल करें और National Cyber Crime Reporting Portal पर शिकायत दर्ज करें", "ट्रांजैक्शन का मैसेज डिलीट कर दें"], a: 2 },
+
+  { q: "आपको ऑफिस की पार्किंग में एक USB ड्राइव मिलती है। आपको क्या करना चाहिए?", o: ["उसे अपने कंप्यूटर में लगाएं", "उसे IT या सिक्योरिटी टीम को सौंप दें", "उसे घर ले जाकर चेक करें", "किसी सहकर्मी को टेस्ट करने के लिए दें"], a: 1 },
+
+  { q: "आप ईमेल चेक करने के लिए सार्वजनिक कंप्यूटर इस्तेमाल करते हैं। वहां से जाने से पहले आपको क्या करना चाहिए?", o: ["अपना पासवर्ड किसी दोस्त को बता दें", "अपना अकाउंट लॉगिन रहने दें", "अपने सभी अकाउंट डिलीट कर दें", "अकाउंट से लॉगआउट करें और पासवर्ड सेव न करें"], a: 3 },
+
+  { q: "आपका दोस्त मैसेज करके तुरंत पैसे मांगता है, लेकिन आपका कॉल नहीं उठाता। आपको क्या करना चाहिए?", o: ["तुरंत पैसे ट्रांसफर कर दें", "अपना UPI PIN बता दें", "किसी दूसरे भरोसेमंद तरीके से दोस्त की पहचान की पुष्टि करें", "बिना जांच किए पैसे भेज दें"], a: 2 }
+];
+
+
+/* VARIABLES */
+
+let questions=[];
+let currentQuestion=0;
+let score=0;
+let selectedAnswer=null;
+let timer=null;
+let timeLeft=QUESTION_TIME;
+let testStarted=false;
+let submitted=false;
+let fullscreenExitCount=0;
+let selectedLanguage="";
+let userData={};
+let submissionId="";
+
+
+/* VALIDATION */
+
+function validateForm(){
+
+ const name=document.getElementById("name").value.trim();
+ const mobile=document.getElementById("mobile").value.trim();
+ const email=document.getElementById("email").value.trim();
+ const occupation=document.getElementById("occupation").value;
+
+ if(!name || !mobile || !email || !occupation){
+  alert("All fields are required / सभी फ़ील्ड भरना अनिवार्य है।");
+  return false;
+ }
+
+ if(!/^[0-9]{10}$/.test(mobile)){
+  alert("Enter valid 10 digit mobile number.");
+  return false;
+ }
+
+ if(!/^[^\s@]+@gmail\.com$/i.test(email)){
+  alert("Please enter a valid Gmail ID.");
+  return false;
+ }
+
+ if(localStorage.getItem("quiz_done_"+mobile)){
+  alert("This mobile number has already attempted the quiz.");
+  return false;
+ }
+
+ return true;
+}
+
+
+/* START QUIZ */
+
+async function startQuiz(){
+
+ if(!validateForm())return;
+
+ try{
+  if(!document.fullscreenElement){
+   await document.documentElement.requestFullscreen();
+  }
+ }catch(error){
+  showNotice("Please allow fullscreen to start the quiz.");
+  return;
+ }
+
+ userData={
+  name:document.getElementById("name").value.trim(),
+  mobile:document.getElementById("mobile").value.trim(),
+  email:document.getElementById("email").value.trim(),
+  occupation:document.getElementById("occupation").value,
+  language:document.getElementById("language").value
+ };
+
+ selectedLanguage=userData.language;
+
+ questions=selectedLanguage==="Hindi"
+  ?hindiQuestions:englishQuestions;
+
+ currentQuestion=0;
+ score=0;
+ submitted=false;
+ testStarted=true;
+ fullscreenExitCount=0;
+
+ submissionId=userData.mobile+"_"+Date.now();
+
+ document.getElementById("registration").classList.add("hidden");
+ document.getElementById("quiz").classList.remove("hidden");
+
+ loadQuestion();
+}
+
+
+/* LOAD QUESTION */
+
+function loadQuestion(){
+
+ clearInterval(timer);
+ timeLeft=QUESTION_TIME;
+ selectedAnswer=null;
+
+ const q=questions[currentQuestion];
+
+ document.getElementById("time").textContent=timeLeft;
+ document.getElementById("qNumber").textContent=currentQuestion+1;
+ document.getElementById("question").textContent=q.q;
+
+ const options=document.getElementById("options");
+ options.innerHTML="";
+
+ q.o.forEach((option,index)=>{
+  const div=document.createElement("div");
+  div.className="option";
+  div.textContent=option;
+  div.onclick=()=>selectAnswer(index,div);
+  options.appendChild(div);
+ });
+
+ document.getElementById("nextBtn").classList.toggle(
+  "hidden",currentQuestion===TOTAL_QUESTIONS-1
+ );
+
+ document.getElementById("submitBtn").classList.toggle(
+  "hidden",currentQuestion!==TOTAL_QUESTIONS-1
+ );
+
+ startTimer();
+}
+
+
+/* TIMER */
+
+function startTimer(){
+
+ timer=setInterval(()=>{
+  timeLeft--;
+  document.getElementById("time").textContent=timeLeft;
+
+  if(timeLeft<=0){
+   clearInterval(timer);
+   autoNext();
+  }
+ },1000);
+}
+
+
+/* ANSWER SELECTION */
+
+function selectAnswer(index,element){
+
+ if(submitted)return;
+
+ selectedAnswer=index;
+
+ document.querySelectorAll(".option").forEach(opt=>{
+  opt.classList.remove("selected");
+ });
+
+ element.classList.add("selected");
+}
+
+function checkCurrentAnswer(){
+ return selectedAnswer!==null &&
+ selectedAnswer===questions[currentQuestion].a;
+}
+
+function nextQuestion(){
+
+ if(selectedAnswer===null){
+  showNotice("Please select an answer / कृपया उत्तर चुनें।");
+  return;
+ }
+
+ autoNext();
+}
+
+function autoNext(){
+
+ clearInterval(timer);
+
+ if(checkCurrentAnswer()){
+  score+=MARKS_PER_QUESTION;
+ }
+
+ currentQuestion++;
+
+ if(currentQuestion<TOTAL_QUESTIONS){
+  loadQuestion();
+ }else{
+  submitQuiz();
+ }
+}
+
+
+/* SUBMIT QUIZ AND SHOW RESULT */
+
+function submitQuiz(){
+
+ if(submitted)return;
+
+ clearInterval(timer);
+
+ if(
+  currentQuestion===TOTAL_QUESTIONS-1 &&
+  selectedAnswer!==null &&
+  checkCurrentAnswer()
+ ){
+  score+=MARKS_PER_QUESTION;
+ }
+
+ score=Math.min(score,TOTAL_QUESTIONS);
+
+ submitted=true;
+ testStarted=false;
+
+ localStorage.setItem("quiz_done_"+userData.mobile,"1");
+
+ document.getElementById("quiz").classList.add("hidden");
+ document.getElementById("result").classList.remove("hidden");
+
+ document.getElementById("resultName").textContent=userData.name;
+
+ document.getElementById("obtained").textContent=score;
+
+ document.getElementById("percentage").textContent=
+ "Percentage / प्रतिशत: "+(score/TOTAL_QUESTIONS*100)+"%";
+
+ document.getElementById("resultMessage").textContent=
+ selectedLanguage==="Hindi"
+ ?"क्विज सफलतापूर्वक जमा हो गई। भाग लेने के लिए धन्यवाद!"
+ :"Your quiz has been submitted successfully. Thank you for participating!";
+
+ sendDataToGoogleSheet("submit");
+}
+
+
+/* GOOGLE SHEETS INTEGRATION */
+
+async function sendDataToGoogleSheet(action){
+
+ const data={
+  action:action,
+  submissionId:submissionId,
+  name:userData.name,
+  mobile:userData.mobile,
+  email:userData.email,
+  occupation:userData.occupation,
+  language:selectedLanguage,
+  marks:score,
+  totalMarks:TOTAL_QUESTIONS,
+  percentage:score/TOTAL_QUESTIONS*100,
+  result:"Completed",
+  certificateStatus:action==="certificate_download"
+    ?"Download Clicked":"Not Downloaded",
+  timestamp:new Date().toISOString()
+ };
+
+ try{
+
+  await fetch(SHEET_URL,{
+   method:"POST",
+   mode:"no-cors",
+   headers:{
+    "Content-Type":"text/plain;charset=utf-8"
+   },
+   body:JSON.stringify(data)
+  });
+
+  if(action==="submit"){
+   document.getElementById("sheetStatus").textContent="";
+  }
+
+  if(action==="certificate_download"){
+   document.getElementById("downloadStatus").textContent="";
+  }
+
+ }catch(error){
+
+  console.error("Google Sheet Error:",error);
+
+  document.getElementById("sheetStatus").textContent=
+  "Network error. Please contact administrator.";
+ }
+}
+
+
+/* CERTIFICATE PDF */
+
+async function loadJsPDF(){
+
+ if(window.jspdf && window.jspdf.jsPDF){
+  return window.jspdf.jsPDF;
+ }
+
+ const urls=[
+  "https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js",
+  "https://cdn.jsdelivr.net/npm/jspdf@2.5.1/dist/jspdf.umd.min.js"
+ ];
+
+ for(const url of urls){
+
+  try{
+
+   await new Promise((resolve,reject)=>{
+
+    const script=document.createElement("script");
+    script.src=url;
+    script.onload=resolve;
+    script.onerror=reject;
+    document.head.appendChild(script);
+
+   });
+
+   if(window.jspdf && window.jspdf.jsPDF){
+    return window.jspdf.jsPDF;
+   }
+
+  }catch(error){
+   // Try the next CDN.
+  }
+ }
+
+ throw new Error("PDF library could not load. Check your internet connection and try again.");
+}
+
+
+async function downloadCertificate(){
+
+ if(!submitted || !userData.name)return;
+
+ const btn=document.getElementById("downloadBtn");
+ btn.disabled=true;
+
+ try{
+
+  const img=new Image();
+  img.src=CERTIFICATE_IMAGE;
+
+  await new Promise((resolve,reject)=>{
+
+   img.onload=resolve;
+
+   img.onerror=()=>reject(
+    new Error("certificate.png not found. Please keep it in the same folder.")
+   );
+
+  });
+
+  const canvas=document.createElement("canvas");
+
+  canvas.width=img.naturalWidth;
+  canvas.height=img.naturalHeight;
+
+  const ctx=canvas.getContext("2d");
+
+  // Draw COMPLETE original certificate.
+  // All logos, QR code, signature and borders remain.
+  ctx.drawImage(img,0,0);
+
+  // No white rectangle behind participant name.
+  // Original certificate background remains unchanged.
+
+  ctx.fillStyle="#555555";
+  ctx.textAlign="center";
+  ctx.textBaseline="middle";
+
+  let fontSize=canvas.width*0.048;
+
+  ctx.font="italic "+fontSize+"px cursive";
+
+  while(
+   ctx.measureText(userData.name).width>canvas.width*0.52 &&
+   fontSize>20
+  ){
+   fontSize-=2;
+   ctx.font="italic "+fontSize+"px cursive";
+  }
+
+  ctx.fillText(
+   userData.name,
+   canvas.width*0.50,
+   canvas.height*0.470
+  );
+
+  const imageData=canvas.toDataURL("image/png");
+
+  // Load jsPDF only when the certificate is downloaded.
+  const jsPDF=await loadJsPDF();
+
+  const pdf=new jsPDF({
+   orientation:canvas.width>=canvas.height?"landscape":"portrait",
+   unit:"px",
+   format:[canvas.width,canvas.height]
+  });
+
+  pdf.addImage(
+   imageData,
+   "PNG",
+   0,
+   0,
+   canvas.width,
+   canvas.height
+  );
+
+  const safeName=userData.name.replace(/[^a-z0-9]/gi,"_");
+
+  pdf.save("TechDefenders1_Foundation_Certificate_"+safeName+".pdf");
+
+  document.getElementById("downloadStatus").textContent=
+   "Certificate download initiated.";
+
+  // Record the download button click in Google Sheet.
+  sendDataToGoogleSheet("certificate_download");
+
+ }catch(error){
+
+  console.error(error);
+  alert(error.message);
+
+ }finally{
+
+  btn.disabled=false;
+ }
+}
+
+
+/* SECURITY RESTRICTIONS */
+
+function showNotice(message,duration=3000){
+
+ const notice=document.getElementById("notice");
+
+ notice.textContent=message;
+ notice.style.display="block";
+
+ setTimeout(()=>{
+  notice.style.display="none";
+ },duration);
+}
+
+
+// Tab switching / minimizing
+
+document.addEventListener("visibilitychange",()=>{
+
+ if(document.hidden && testStarted && !submitted){
+
+  showNotice(
+   selectedLanguage==="Hindi"
+   ?"टैब बदलने के कारण क्विज जमा हो रही है।"
+   :"Quiz submitted due to tab switching."
+  );
+
+  submitQuiz();
+ }
+});
+
+
+// Disable right click during quiz
+
+document.addEventListener("contextmenu",e=>{
+
+ if(testStarted && !submitted){
+  e.preventDefault();
+ }
+});
+
+
+// Restrict common shortcuts
+
+document.addEventListener("keydown",e=>{
+
+ if(!testStarted || submitted)return;
+
+ if(
+  e.key==="F12" ||
+  (e.ctrlKey && ["u","U","c","C","i","I","j","J","s","S","p","P"].includes(e.key)) ||
+  (e.ctrlKey && e.shiftKey && ["I","J","C"].includes(e.key))
+ ){
+  e.preventDefault();
+ }
+});
+
+
+// Resume fullscreen
+
+async function resumeFullscreen(){
+
+ try{
+
+  await document.documentElement.requestFullscreen();
+
+  document.getElementById("resumeFullscreen").style.display="none";
+
+ }catch(error){
+
+  showNotice("Please allow fullscreen permission.");
+ }
+}
+
+
+// Fullscreen exit tracking
+
+document.addEventListener("fullscreenchange",()=>{
+
+ if(testStarted && !submitted && !document.fullscreenElement){
+
+  fullscreenExitCount++;
+
+  document.getElementById("resumeFullscreen").style.display="block";
+
+  if(fullscreenExitCount>=3){
+
+   showNotice("Fullscreen exited 3 times. Quiz submitted.");
+
+   submitQuiz();
+
+  }else{
+
+   showNotice(
+    "Fullscreen is off. Resume Fullscreen to continue. ("+
+    fullscreenExitCount+"/3)"
+   );
+  }
+
+ }else if(document.fullscreenElement){
+
+  document.getElementById("resumeFullscreen").style.display="none";
+ }
+});
+
+</script>
+</body>
+</html>
